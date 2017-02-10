@@ -17,7 +17,7 @@ namespace SoftN_Trainings.Models.BO
         [Required]
         public string FirstName { get; set; }
         [ForeignKey("Inscription")]
-        public int InscriptionId { get; set; }
+        public int InscriptionID { get; set; }
 
         //navigation properties
         public virtual Inscription Inscription { get; set; }

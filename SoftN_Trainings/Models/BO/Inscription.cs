@@ -16,18 +16,18 @@ namespace SoftN_Trainings.Models.BO
         public string Name { get; set; }
         [Required]
         public string FirstName { get; set; }
-        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
         public string CompanyName { get; set; }
-        [Required]
         public int NumberAttendees { get; set; }
         [Required]
         public Boolean WaitingList { get; set; }
         [ForeignKey("Session")]
-        public int SessionId { get; set; }
+        public int SessionID { get; set; }
 
         //naviation properties
         public virtual Session Session { get; set; }

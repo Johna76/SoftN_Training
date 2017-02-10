@@ -19,7 +19,7 @@ namespace SoftN_Trainings.Models.BO
         [Required]
         public string ZipCode { get; set; }
         [Required]
-        public String City { get; set; }
+        public string City { get; set; }
 
         //naviation properties
         public virtual ICollection<Session> Sessions { get; set; }

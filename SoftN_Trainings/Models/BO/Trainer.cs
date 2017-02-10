@@ -13,7 +13,7 @@ namespace SoftN_Trainings.Models.BO
         [Key]
         public int ID { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string LastName { get; set; }
         [Required]
         public string FirstName { get; set; }
 

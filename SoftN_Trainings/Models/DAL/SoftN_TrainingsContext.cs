@@ -9,14 +9,14 @@ namespace SoftN_Trainings.Models.DAL
 {
     public class SoftN_TrainingsContext : DbContext
     {
-        public DbSet<User> User { get; set; }
-        public DbSet<Attendee> Attendee { get; set; }
-        public DbSet<Inscription> Inscription { get; set; }
-        public DbSet<Location> Location { get; set; }
-        public DbSet<Requisite> Requisite { get; set; }
-        public DbSet<Session> Session { get; set; }
-        public DbSet<Trainer> Trainer { get; set; }
-        public DbSet<Training> Training { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<Inscription> Inscriptions { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Requisite> Requisites { get; set; }
+        public DbSet<Session> Sessions { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Training> Trainings { get; set; }
 
         public SoftN_TrainingsContext()
             : base("Data Source=asus_johna\\sqlexpress;Initial Catalog=SoftN_TrainingDB;Integrated Security=True")

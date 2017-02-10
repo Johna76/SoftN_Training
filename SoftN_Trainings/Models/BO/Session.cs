@@ -12,16 +12,17 @@ namespace SoftN_Trainings.Models.BO
     {
         [Key]
         public int ID { get; set; }
-        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
-        [Required]
         public int MaxAttendees { get; set; }
         [ForeignKey("Training")]
-        public int TrainingId { get; set; }
+        public int TrainingID { get; set; }
         [ForeignKey("Location")]
-        public int LocationId { get; set; }
+        public int LocationID { get; set; }
 
         //navigation properties
         public virtual Training Training { get; set; }
