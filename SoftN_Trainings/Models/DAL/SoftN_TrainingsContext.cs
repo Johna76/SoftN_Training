@@ -24,5 +24,20 @@ namespace SoftN_Trainings.Models.DAL
             Database.SetInitializer<SoftN_TrainingsContext>(
                 new DropCreateDatabaseIfModelChanges<SoftN_TrainingsContext>());
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Session>()
+                .HasMany(up => up.Trainers)
+                .WithMany(trainer => trainer.Sessions)
+                .Map(mc =>
+                {
+                    mc.ToTable("Session_Trainer");
+                    mc.MapLeftKey("SessionID");
+                    mc.MapRightKey("TrainerID");
+                });
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }

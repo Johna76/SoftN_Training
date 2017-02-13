@@ -1,0 +1,66 @@
+﻿@model SoftN_Trainings.Models.BO.Session
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Session</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Location.Street)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location.Street)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Training.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Training.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxAttendees)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxAttendees)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Trainers)
+        </dt>
+
+        <dd>
+            @Html.ListBox("Id", new SelectList(Model.Trainers, "Id", "Fullname"))
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

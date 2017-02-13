@@ -17,7 +17,7 @@ namespace SoftN_Trainings.Models.BO
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }
+        public DateTime EndDate { get; set; }        
         public int MaxAttendees { get; set; }
         [ForeignKey("Training")]
         public int TrainingID { get; set; }
@@ -30,5 +30,10 @@ namespace SoftN_Trainings.Models.BO
         public virtual ICollection<Inscription> Inscriptions { get; set; }
         public virtual ICollection<Trainer> Trainers { get; set; }
         public virtual ICollection<Requisite> Requisites { get; set; }
+
+        public Session()
+        {
+            Trainers = new List<Trainer>();
+        }
     }
 }
