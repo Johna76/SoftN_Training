@@ -17,6 +17,7 @@ namespace SoftN_Trainings.Models.BO
         [Required]
         public string Number { get; set; }
         [Required]
+        [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
         [Required]
         public string City { get; set; }

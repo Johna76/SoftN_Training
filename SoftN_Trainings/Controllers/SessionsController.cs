@@ -41,30 +41,17 @@ namespace SoftN_Trainings.Controllers
         // GET: Sessions/Create
         public ActionResult Create()
         {
-            var sessionCreateViewModel = new SessionCreateViewModel();
+            SessionViewModel sessionVM = new SessionViewModel();
+            
+            sessionVM.AllTrainers = GetAllTrainers();
+            
+            sessionVM.AllLocations = GetAllLocations();
 
-            var allTrainersList = db.Trainers.ToList();
-            sessionCreateViewModel.AllTrainers = allTrainersList.Select(o => new SelectListItem
-            {
-                Text = o.Fullname,
-                Value = o.ID.ToString()
-            });
+            sessionVM.AllTrainings = GetAllTrainings();
 
-            var allLocationsList = db.Locations.ToList();
-            sessionCreateViewModel.AllLocations = allLocationsList.Select(o => new SelectListItem
-            {
-                Text = o.City,
-                Value = o.ID.ToString()
-            });
+            sessionVM.AllRequisites = GetAllRequisites();
 
-            var allTrainingsList = db.Trainings.ToList();
-            sessionCreateViewModel.AllTrainings = allTrainingsList.Select(o => new SelectListItem
-            {
-                Text = o.Name,
-                Value = o.ID.ToString()
-            });
-
-            return View(sessionCreateViewModel);
+            return View(sessionVM);
         }
 
         // POST: Sessions/Create
@@ -72,29 +59,30 @@ namespace SoftN_Trainings.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SessionCreateViewModel sessionCreateViewModel)
+        public ActionResult Create(SessionViewModel sessionVM)
         {
             if (ModelState.IsValid)
-            {
-                Session session = new Session
+            {   
+                if(sessionVM.SelectedTrainers != null)
                 {
-                    StartDate = sessionCreateViewModel.Session.StartDate,
-                    EndDate = sessionCreateViewModel.Session.EndDate,
-                    MaxAttendees = sessionCreateViewModel.Session.MaxAttendees,
-                    TrainingID = sessionCreateViewModel.Session.TrainingID,
-                    LocationID = sessionCreateViewModel.Session.LocationID,
-                };
-
-                foreach(int trainer in sessionCreateViewModel.SelectedTrainers)
-                {
-                    session.Trainers.Add(db.Trainers.Find(trainer));
+                    foreach (int trainer in sessionVM.SelectedTrainers)
+                    {
+                        sessionVM.Session.Trainers.Add(db.Trainers.Find(trainer));
+                    }
                 }
-
-                db.Sessions.Add(session);
+                
+                if(sessionVM.SelectedRequisites != null)
+                {
+                    foreach (int requisite in sessionVM.SelectedRequisites)
+                    {
+                        sessionVM.Session.Requisites.Add(db.Requisites.Find(requisite));
+                    }
+                }
+                db.Sessions.Add(sessionVM.Session);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sessionCreateViewModel);
+            return View(sessionVM);
         }
 
         // GET: Sessions/Edit/5
@@ -105,39 +93,35 @@ namespace SoftN_Trainings.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var sessionEditViewModel = new SessionEditViewModel
+            SessionViewModel sessionVM = new SessionViewModel
             {
-                Session = db.Sessions.Include(i => i.Trainers).First(i => i.ID == id),
+                Session = db.Sessions.Include(i => i.Trainers).Include(i => i.Requisites).First(i => i.ID == id),
             };
 
-            if (sessionEditViewModel.Session == null)
+            if (sessionVM.Session == null)
             {
                 return HttpNotFound();
             }
 
-            var allTrainersList = db.Trainers.ToList();
-            sessionEditViewModel.AllTrainers = allTrainersList.Select(o => new SelectListItem
+            if (sessionVM.SelectedTrainers == null)
             {
-                Text = o.Fullname,
-                Value = o.ID.ToString()
-            });
+                sessionVM.SelectedTrainers = sessionVM.Session.Trainers.Select(m => m.ID).ToList();
+            }
 
-            var allLocationsList = db.Locations.ToList();
-            sessionEditViewModel.AllLocations = allLocationsList.Select(o => new SelectListItem
+            if (sessionVM.SelectedRequisites == null)
             {
-                Text = o.City,
-                Value = o.ID.ToString()
-            });
+                sessionVM.SelectedRequisites = sessionVM.Session.Requisites.Select(m => m.ID).ToList();
+            }
 
-            var allTrainingsList = db.Trainings.ToList();
-            sessionEditViewModel.AllTrainings = allTrainingsList.Select(o => new SelectListItem
-            {
-                Text = o.Name,
-                Value = o.ID.ToString()
-            });
+            sessionVM.AllTrainers = GetAllTrainers();
+            
+            sessionVM.AllLocations = GetAllLocations();
+            
+            sessionVM.AllTrainings = GetAllTrainings();
 
-            return View(sessionEditViewModel);
-           
+            sessionVM.AllRequisites = GetAllRequisites();
+
+            return View(sessionVM);
         }
 
         // POST: Sessions/Edit/5
@@ -145,27 +129,45 @@ namespace SoftN_Trainings.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(SessionEditViewModel sessionEditViewModel)
+        public ActionResult Edit(SessionViewModel sessionVM)
         {
             if (ModelState.IsValid)
             {
-                var originalSession = db.Sessions.Find(sessionEditViewModel.Session.ID);
+                Session originalSession = db.Sessions.Find(sessionVM.Session.ID);
+
+                LoadSessionWithVM(originalSession, sessionVM);
 
                 foreach (var trainer in originalSession.Trainers.ToList())
                 {
                     originalSession.Trainers.Remove(trainer);
                 }
 
-                foreach (var trainer in sessionEditViewModel.SelectedTrainers)
+                if(sessionVM.SelectedTrainers != null)
                 {
-                    originalSession.Trainers.Add(db.Trainers.Find(trainer));
+                    foreach (var trainer in sessionVM.SelectedTrainers)
+                    {
+                        originalSession.Trainers.Add(db.Trainers.Find(trainer));
+                    }
+                }
+
+                foreach (var requisite in originalSession.Requisites.ToList())
+                {
+                    originalSession.Requisites.Remove(requisite);
+                }
+
+                if(sessionVM.SelectedRequisites != null)
+                {
+                    foreach (var requisite in sessionVM.SelectedRequisites)
+                    {
+                        originalSession.Requisites.Add(db.Requisites.Find(requisite));
+                    }
                 }
 
                 db.Entry(originalSession).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(sessionEditViewModel);
+            return View(sessionVM);
         }
 
         // GET: Sessions/Delete/5
@@ -194,28 +196,58 @@ namespace SoftN_Trainings.Controllers
             return RedirectToAction("Index");
         }
 
-        private void PopulateLocationDropDownList(object selectedLocation = null)
+        private IEnumerable<SelectListItem> GetAllTrainers()
         {
-            var locationsQuery = from d in db.Locations
-                                   orderby d.City
-                                   select d;
-            ViewBag.DepartmentID = new SelectList(locationsQuery, "ID", "City", selectedLocation);
+            var allTrainersList = db.Trainers.ToList();
+            IEnumerable<SelectListItem> alltrainers = allTrainersList.Select(o => new SelectListItem
+            {
+                Text = o.Fullname,
+                Value = o.ID.ToString()
+            });
+            return alltrainers;
         }
 
-        private void PopulateRequisiteDropDownList(object selectedRequisite = null)
+        private IEnumerable<SelectListItem> GetAllLocations()
         {
-            var requisitesQuery = from d in db.Requisites
-                                   orderby d.Name
-                                   select d;
-            ViewBag.DepartmentID = new SelectList(requisitesQuery, "ID", "Name", selectedRequisite);
+            var allLocationsList = db.Locations.ToList();
+            IEnumerable <SelectListItem> allLocations = allLocationsList.Select(o => new SelectListItem
+            {
+                Text = o.City,
+                Value = o.ID.ToString()
+            });
+            return allLocations;
         }
 
-        private void PopulateTrainerDropDownList(object selectedTrainer = null)
+        private IEnumerable<SelectListItem> GetAllTrainings()
         {
-            var trainersQuery = from d in db.Trainers
-                                   orderby d.LastName
-                                   select d;
-            ViewBag.DepartmentID = new SelectList(trainersQuery, "ID", "Name", selectedTrainer);
+            var allTrainingsList = db.Trainings.ToList();
+            IEnumerable <SelectListItem> allTrainings = allTrainingsList.Select(o => new SelectListItem
+            {
+                Text = o.Name,
+                Value = o.ID.ToString()
+            });
+            return allTrainings;
+        }
+
+        private IEnumerable<SelectListItem> GetAllRequisites()
+        {
+            var allRequisistesList = db.Requisites.ToList();
+            IEnumerable<SelectListItem> allRequisites = allRequisistesList.Select(o => new SelectListItem
+            {
+                Text = o.Name,
+                Value = o.ID.ToString()
+            });
+            return allRequisites;
+        }
+
+        private void LoadSessionWithVM(Session session, SessionViewModel sessionViewModel)
+        {
+            session.Date = sessionViewModel.Session.Date;
+            session.StartTime = sessionViewModel.Session.StartTime;
+            session.EndTime = sessionViewModel.Session.EndTime;
+            session.MaxAttendees = sessionViewModel.Session.MaxAttendees;
+            session.TrainingID = sessionViewModel.Session.TrainingID;
+            session.LocationID = sessionViewModel.Session.LocationID;
         }
 
         protected override void Dispose(bool disposing)

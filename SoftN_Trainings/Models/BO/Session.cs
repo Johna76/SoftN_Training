@@ -12,12 +12,19 @@ namespace SoftN_Trainings.Models.BO
     {
         [Key]
         public int ID { get; set; }
+        [Column(TypeName = "date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]
-        public DateTime StartDate { get; set; }
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }        
+        [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]        
+        public DateTime Date { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Start Time")]
+        public TimeSpan StartTime { get; set; }
+        [DataType(DataType.Time)]
+        [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
+        [Display(Name = "End Time")]
+        public TimeSpan EndTime { get; set; }
+        [Display(Name = "Max Attendees")]
         public int MaxAttendees { get; set; }
         [ForeignKey("Training")]
         public int TrainingID { get; set; }
@@ -34,6 +41,7 @@ namespace SoftN_Trainings.Models.BO
         public Session()
         {
             Trainers = new List<Trainer>();
+            Requisites = new List<Requisite>();
         }
     }
 }

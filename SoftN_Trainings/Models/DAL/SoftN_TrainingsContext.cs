@@ -36,6 +36,17 @@ namespace SoftN_Trainings.Models.DAL
                     mc.MapLeftKey("SessionID");
                     mc.MapRightKey("TrainerID");
                 });
+
+            modelBuilder.Entity<Session>()
+                .HasMany(up => up.Requisites)
+                .WithMany(requisite => requisite.Sessions)
+                .Map(mc =>
+                {
+                    mc.ToTable("Session_Requisite");
+                    mc.MapLeftKey("SessionID");
+                    mc.MapRightKey("RequisiteID");
+                });
+
             base.OnModelCreating(modelBuilder);
         }
 
