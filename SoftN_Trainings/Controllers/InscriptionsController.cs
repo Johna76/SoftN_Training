@@ -139,7 +139,6 @@ namespace SoftN_Trainings.Controllers
             {                
                 inscriptionVM.Attend.Add(item.LastName.ToString());
                 inscriptionVM.Attend.Add(item.FirstName.ToString());
-                inscriptionVM.Attend.Add(item.ID.ToString());
             }
             
             return View(inscriptionVM);

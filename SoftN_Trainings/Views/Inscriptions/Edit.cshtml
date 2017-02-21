@@ -1,0 +1,205 @@
+﻿@model SoftN_Trainings.ViewModels.InscriptionViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Inscription</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Inscription.ID)
+        @Html.HiddenFor(model => model.Inscription.SessionID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inscription.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inscription.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inscription.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inscription.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Inscription.CompanyName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.NumberAttendees, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Inscription.NumberAttendees, new { htmlAttributes = new { @class = "form-control", @onchange = "onchangeevent();" } })
+                @Html.ValidationMessageFor(model => model.Inscription.NumberAttendees, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Inscription.WaitingList, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Inscription.WaitingList)
+                    @Html.ValidationMessageFor(model => model.Inscription.WaitingList, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="insert">
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-info" />
+            </div>
+        </div>
+    </div>
+}
+@section Javascript
+    {
+    <script>
+
+        var allAttendees = new Array();
+
+        @foreach(var d in Model.Attend)
+        {
+        @:allAttendees.push("@d");
+        }
+
+        //var x = allAttendees.length / 2;
+        var currentCounter = Number(allAttendees.length / 2);
+
+        $(document).ready(function () {
+
+
+
+            var e = 0;
+
+            for (i = 0; i < allAttendees.length; i += 2) {
+
+                var attendnr = e + 1;
+                var lastname = allAttendees[i];
+                var firstname = allAttendees[i + 1];
+
+                var div = $(document.createElement('div'));
+                $(div).attr('id', 'attendee' + e);
+                var div1 = $(document.createElement('div'));
+                $(div1).attr('class', 'form-group');
+                var div2 = $(document.createElement('div'));
+                $(div2).attr('class', 'col-md-10');
+                var div3 = $(document.createElement('div'));
+                $(div3).attr('class', 'form-group');
+                var div4 = $(document.createElement('div'));
+                $(div4).attr('class', 'col-md-10');
+
+                $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
+                $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + e + '].LastName" type="text" value="' + lastname + '" />');
+                $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
+                $(div1).append(div2);
+                $(div).append(div1);
+                $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
+                $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + e + '].FirstName" type="text" value="'+ firstname +'" />');
+                $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
+                $(div3).append(div4);
+                $(div).append(div3);
+                $('.insert').append(div);
+
+                e++;
+            }
+        });
+
+
+        function onchangeevent() {
+            var inputCounter = Number(document.getElementById("Inscription_NumberAttendees").value);
+            //$(".insert").empty();
+
+            if (inputCounter > currentCounter) {
+                //div toevoegen
+                var diff = inputCounter - currentCounter;
+                var indexDif = currentCounter;
+
+                for (i = 0; i < diff; i++) {
+                    var attendnr = Number(currentCounter) + 1;
+
+                    var div = $(document.createElement('div'));
+                    $(div).attr('id', 'attendee' + indexDif);
+                    var div1 = $(document.createElement('div'));
+                    $(div1).attr('class', 'form-group');
+                    var div2 = $(document.createElement('div'));
+                    $(div2).attr('class', 'col-md-10');
+                    var div3 = $(document.createElement('div'));
+                    $(div3).attr('class', 'form-group');
+                    var div4 = $(document.createElement('div'));
+                    $(div4).attr('class', 'col-md-10');
+
+                    $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
+                    $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + indexDif + '].LastName" type="text" value="" />');
+                    $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
+                    $(div1).append(div2);
+                    $(div).append(div1);
+                    $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
+                    $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + indexDif + '].FirstName" type="text" value="" />');
+                    $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
+                    $(div3).append(div4);
+                    $(div).append(div3);
+                    $('.insert').append(div);
+
+                    currentCounter++;
+                    indexDif++;
+                }
+            }
+
+            if (inputCounter < currentCounter) {
+                var diff = currentCounter - inputCounter;
+                var indexLastDif = currentCounter - 1;
+
+                for (i = 0; i < diff; i++) {
+                    var element = document.getElementById("attendee" + indexLastDif);
+                    element.parentNode.removeChild(element);
+                    indexLastDif--;
+                }
+            }
+
+            currentCounter = inputCounter;
+        }
+    </script>    
+    }
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
