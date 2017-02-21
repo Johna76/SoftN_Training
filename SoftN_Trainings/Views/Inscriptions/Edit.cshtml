@@ -97,13 +97,9 @@
         @:allAttendees.push("@d");
         }
 
-        //var x = allAttendees.length / 2;
         var currentCounter = Number(allAttendees.length / 2);
 
         $(document).ready(function () {
-
-
-
             var e = 0;
 
             for (i = 0; i < allAttendees.length; i += 2) {
@@ -142,10 +138,8 @@
 
         function onchangeevent() {
             var inputCounter = Number(document.getElementById("Inscription_NumberAttendees").value);
-            //$(".insert").empty();
 
             if (inputCounter > currentCounter) {
-                //div toevoegen
                 var diff = inputCounter - currentCounter;
                 var indexDif = currentCounter;
 

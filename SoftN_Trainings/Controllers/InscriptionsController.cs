@@ -154,13 +154,12 @@ namespace SoftN_Trainings.Controllers
             if (ModelState.IsValid)
             {
                 Inscription originalInscription = db.Inscriptions.Find(inscriptionVM.Inscription.ID);
+                
+                Boolean updateInscription = false;
 
                 if(inscriptionVM.Inscription.WaitingList == true)
                 {
-                    LoadInscriptionWithVM(originalInscription, inscriptionVM.Inscription);
-                    db.Entry(originalInscription).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    updateInscription = true;
                 }
                 else
                 {
@@ -173,15 +172,34 @@ namespace SoftN_Trainings.Controllers
                     
                     if ((_session.PlacesLeft - inscriptionVM.Inscription.NumberAttendees) >= 0)
                     {
-                        LoadInscriptionWithVM(originalInscription, inscriptionVM.Inscription);
-                        db.Entry(originalInscription).State = EntityState.Modified;
-                        db.SaveChanges();
-                        return RedirectToAction("Index");
+                        updateInscription = true;
+                        
                     }
                     else
                     {
                         ModelState.AddModelError("", "Er is onvoldoende plaats in deze sessie. Gelieve u op de wachtlijst te zetten of een andere sessie te kiezen");
                     }
+                }
+
+                if(updateInscription == true)
+                {
+                    foreach (Attendee a in originalInscription.Attendees.ToList())
+                    {
+                        db.Attendees.Remove(a);
+                    }
+
+                    int id = originalInscription.ID;
+
+                    foreach (Attendee a in inscriptionVM.Attendees)
+                    {
+                        a.InscriptionID = id;
+                        db.Attendees.Add(a);
+                    };
+                    
+                    LoadInscriptionWithVM(originalInscription, inscriptionVM.Inscription);
+                    db.Entry(originalInscription).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
                 
             }

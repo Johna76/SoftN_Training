@@ -97,4 +97,3 @@ G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Mi
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Microsoft.AI.Web.xml
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.dll
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.pdb
-g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.csprojResolveAssemblyReference.cache
