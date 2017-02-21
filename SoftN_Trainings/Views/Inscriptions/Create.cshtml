@@ -96,12 +96,63 @@
 @section Javascript
     {
     <script>
+        var currentCounter = 0;
+
         function onchangeevent() {
-            var counter = document.getElementById("Inscription_NumberAttendees").value;
-            $(".insert").empty();
-            for (i = 0; i < counter; i++) {
+            var inputCounter = Number(document.getElementById("Inscription_NumberAttendees").value);
+            //$(".insert").empty();
+
+            if (inputCounter < currentCounter) {
+                var diff = currentCounter - inputCounter;
+                var indexLastDif = currentCounter - 1;
+
+                for (i = 0; i < diff; i++) {
+                    var element = document.getElementById("attendee" + indexLastDif);
+                    element.parentNode.removeChild(element);
+                    indexLastDif--;
+                }
+            }
+
+            if (inputCounter > currentCounter) {
+                var diff = inputCounter - currentCounter;
+                var indexDif = currentCounter;
+
+                for (i = 0; i < diff; i++) {
+                    var attendnr = Number(currentCounter) + 1;
+
+                    var div = $(document.createElement('div'));
+                    $(div).attr('id', 'attendee' + currentCounter);
+                    var div1 = $(document.createElement('div'));
+                    $(div1).attr('class', 'form-group');
+                    var div2 = $(document.createElement('div'));
+                    $(div2).attr('class', 'col-md-10');
+                    var div3 = $(document.createElement('div'));
+                    $(div3).attr('class', 'form-group');
+                    var div4 = $(document.createElement('div'));
+                    $(div4).attr('class', 'col-md-10');
+
+                    $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
+                    $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + currentCounter + '].LastName" type="text" value="" />');
+                    $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
+                    $(div1).append(div2);
+                    $(div).append(div1);
+                    $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
+                    $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + currentCounter + '].FirstName" type="text" value="" />');
+                    $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
+                    $(div3).append(div4);
+                    $(div).append(div3);
+                    $('.insert').append(div);
+
+                    currentCounter++;
+                }
+            }
+
+            currentCounter = inputCounter;
+            /*for (i = 0; i < inputCounter; i++) {
                 var attendnr = i + 1;
 
+                var div = $(document.createElement('div'));
+                $(div).attr('id', 'attendee' + i);
                 var div1 = $(document.createElement('div'));
                 $(div1).attr('class', 'form-group');
                 var div2 = $(document.createElement('div'));
@@ -110,62 +161,25 @@
                 $(div3).attr('class', 'form-group');
                 var div4 = $(document.createElement('div'));
                 $(div4).attr('class', 'col-md-10');
-                //div1 = setAttribute("class", "form-group");
 
-                /*var label1 = document.createElement("label");
-                label1.setAttribute("class", "control-label col-md-2");
-                label1.innerHTML = "Last Name " + attendnr;
-
-                var textbox1 = document.createElement("input");
-                textbox1.setAttribute("class", "form-control text-box single-line");
-                textbox1.setAttribute("type", "text");
-                textbox1.setAttribute("name", "Attendees[" + i +"].LastName");
-                textbox1.setAttribute("value", "");
-                textbox1.setAttribute("htmlAttributes", "{ class = form-control }");
-
-                var label2 = document.createElement("label");
-                label2.setAttribute("class", "control-label col-md-2");
-                label2.innerHTML = "First Name " + attendnr;
-
-                var textbox2 = document.createElement("input");
-                textbox2.setAttribute("class", "form-control text-box single-line");
-                textbox2.setAttribute("type", "text");
-                textbox2.setAttribute("name", "Attendees[" + i + "].FirstName");
-                textbox2.setAttribute("value", "");
-                textbox2.setAttribute("htmlAttributes", "{ class = form-control }");
-
-                
-                $(div1).append(label);
-                //div1.appendChild(textbox);
-                $('.insert').after(div1);
-                $(".insert").append(textbox1);
-                $(".insert").append(label2);
-                $(".insert").append(textbox2);*/
                 $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
                 $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + i + '].LastName" type="text" value="" />');
                 $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
                 $(div1).append(div2); 
-                $('.insert').append(div1);
+                $(div).append(div1);
                 $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
                 $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + i + '].FirstName" type="text" value="" />');
                 $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
-                $(div3).append(div4);
-                $('.insert').append(div3);
-            }
-            
-                
+                $(div).append(div3);
+                $('.insert').append(div);
 
-
-            //var text = "hello";
-            //$(".insert").append(text);  
+                currentCounter++;
+            }*/
+                          
         }
     </script>
     }
     
-
-    
-
-
 
 <div>
     @Html.ActionLink("Back to Session List", "Index", "Sessions")
