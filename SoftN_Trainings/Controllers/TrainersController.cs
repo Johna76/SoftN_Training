@@ -12,6 +12,7 @@ using PagedList;
 
 namespace SoftN_Trainings.Controllers
 {
+    [Authorize]
     public class TrainersController : Controller
     {
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();

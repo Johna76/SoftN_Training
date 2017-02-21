@@ -49,6 +49,5 @@ namespace SoftN_Trainings.Models.DAL
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

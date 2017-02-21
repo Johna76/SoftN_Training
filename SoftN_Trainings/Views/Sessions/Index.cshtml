@@ -7,7 +7,10 @@
 <h2>Index</h2>
 
 <p>
+@if (User.Identity.IsAuthenticated)
+{
     @Html.ActionLink("Create New", "Create")
+}
 </p>
 <table class="table">
     <tr>
@@ -27,7 +30,7 @@
             @Html.DisplayNameFor(model => model.EndTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MaxAttendees)
+            @Html.DisplayNameFor(model => model.PlacesLeft)
         </th>
         <th></th>
     </tr>
@@ -50,12 +53,16 @@
             @Html.DisplayFor(modelItem => item.EndTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.MaxAttendees)
+            @Html.DisplayFor(modelItem => item.PlacesLeft)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @if (User.Identity.IsAuthenticated)
+            {   
+                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) @:|
+                @Html.ActionLink("Details", "Details", new { id=item.ID }) @:|
+                @Html.ActionLink("Delete", "Delete", new { id=item.ID }) @:|
+            }
+            @Html.ActionLink("Inschrijven", "Create", "Inscriptions", new { sessionId = item.ID }, null)
         </td>
     </tr>
 }

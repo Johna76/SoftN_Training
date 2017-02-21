@@ -11,6 +11,7 @@ using SoftN_Trainings.Models.DAL;
 
 namespace SoftN_Trainings.Controllers
 {
+    [Authorize]
     public class TrainingsController : Controller
     {
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();
@@ -94,7 +95,7 @@ namespace SoftN_Trainings.Controllers
             }
             Training trainingToUpdate = db.Trainings.Find(id);
             if (TryUpdateModel(trainingToUpdate, "",
-                new string[] { "Name", "Description" }))
+                new string[] { "LastName", "Description" }))
             {
                 try
                 {

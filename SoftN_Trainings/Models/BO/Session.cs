@@ -25,11 +25,15 @@ namespace SoftN_Trainings.Models.BO
         [Display(Name = "End Time")]
         public TimeSpan EndTime { get; set; }
         [Display(Name = "Max Attendees")]
+        [Range(1, 1000)]
         public int MaxAttendees { get; set; }
         [ForeignKey("Training")]
         public int TrainingID { get; set; }
         [ForeignKey("Location")]
         public int LocationID { get; set; }
+        [NotMapped]
+        [Display(Name = "Places Left")]
+        public int PlacesLeft { get; set; }
 
         //navigation properties
         public virtual Training Training { get; set; }

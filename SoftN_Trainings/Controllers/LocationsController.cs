@@ -11,6 +11,7 @@ using SoftN_Trainings.Models.DAL;
 
 namespace SoftN_Trainings.Controllers
 {
+    [Authorize]
     public class LocationsController : Controller
     {
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();

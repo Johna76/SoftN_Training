@@ -11,6 +11,7 @@ using SoftN_Trainings.Models.DAL;
 
 namespace SoftN_Trainings.Controllers
 {
+    [Authorize]
     public class RequisitesController : Controller
     {
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();
@@ -93,7 +94,7 @@ namespace SoftN_Trainings.Controllers
             }
             Requisite requisiteToUpdate = db.Requisites.Find(id);
             if (TryUpdateModel(requisiteToUpdate, "",
-                new string[] { "Name", "Description" }))
+                new string[] { "LastName", "Description" }))
             {
                 try
                 {

@@ -13,11 +13,14 @@ namespace SoftN_Trainings.Models.BO
         [Key]
         public int ID { get; set; }
         [Required]
-        public string Name { get; set; }
+        [Display(Name ="Last Name")]
+        public string LastName { get; set; }
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [ForeignKey("Inscription")]
         public int InscriptionID { get; set; }
+        public string Fullname { get { return LastName + " " + FirstName; } }
 
         //navigation properties
         public virtual Inscription Inscription { get; set; }

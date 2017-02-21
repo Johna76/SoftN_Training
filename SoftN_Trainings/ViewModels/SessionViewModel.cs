@@ -1,8 +1,5 @@
 ﻿using SoftN_Trainings.Models.BO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SoftN_Trainings.ViewModels
@@ -16,7 +13,13 @@ namespace SoftN_Trainings.ViewModels
         public IEnumerable<SelectListItem> AllRequisites { get; set; }
         public List<int> SelectedTrainers { get; set; }
         public List<int> SelectedRequisites { get; set; }
-        
+
+        public SessionViewModel()
+        {
+            SelectedTrainers = new List<int>();
+            SelectedRequisites = new List<int>();
+        }
+
 
 
     }

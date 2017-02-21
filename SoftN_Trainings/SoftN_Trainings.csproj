@@ -195,6 +195,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InscriptionsController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RequisitesController.cs" />
@@ -219,6 +220,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\InscriptionViewModel.cs" />
     <Compile Include="ViewModels\SessionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -312,6 +314,11 @@
     <Content Include="Views\Sessions\Details.cshtml" />
     <Content Include="Views\Sessions\Edit.cshtml" />
     <Content Include="Views\Sessions\Index.cshtml" />
+    <Content Include="Views\Inscriptions\Create.cshtml" />
+    <Content Include="Views\Inscriptions\Delete.cshtml" />
+    <Content Include="Views\Inscriptions\Details.cshtml" />
+    <Content Include="Views\Inscriptions\Edit.cshtml" />
+    <Content Include="Views\Inscriptions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

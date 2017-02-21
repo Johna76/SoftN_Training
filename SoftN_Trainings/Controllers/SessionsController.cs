@@ -12,15 +12,33 @@ using SoftN_Trainings.ViewModels;
 
 namespace SoftN_Trainings.Controllers
 {
+    [Authorize]
     public class SessionsController : Controller
     {
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();
 
+        [AllowAnonymous]
         // GET: Sessions
         public ActionResult Index()
         {
-            var sessions = db.Sessions.Include(s => s.Location).Include(s => s.Training);
-            return View(sessions.ToList());
+            var sessions = db.Sessions.Include(s => s.Location).Include(s => s.Training).Include(s => s.Inscriptions);
+            List<Session> allSessions = sessions.ToList();
+
+            foreach(Session session in allSessions)
+            {
+                int totalInscriptionPlaces = 0;
+
+                foreach(Inscription item in session.Inscriptions)
+                {
+                    if(item.WaitingList == false)
+                    {
+                        totalInscriptionPlaces += item.NumberAttendees;
+                    }
+                }
+
+                session.PlacesLeft = session.MaxAttendees - totalInscriptionPlaces;
+            }
+            return View(allSessions);
         }
 
         // GET: Sessions/Details/5
@@ -41,7 +59,10 @@ namespace SoftN_Trainings.Controllers
         // GET: Sessions/Create
         public ActionResult Create()
         {
-            SessionViewModel sessionVM = new SessionViewModel();
+            SessionViewModel sessionVM = new SessionViewModel()
+            {
+                Session = new Session(),
+            };
             
             sessionVM.AllTrainers = GetAllTrainers();
             
