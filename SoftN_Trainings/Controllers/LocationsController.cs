@@ -48,7 +48,7 @@ namespace SoftN_Trainings.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Street,Number,ZipCode,City")] Location location)
+        public ActionResult Create([Bind(Include = "Street,Number,ZipCode,City,Remarks")] Location location)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace SoftN_Trainings.Controllers
             }
             Location locationToUpdate = db.Locations.Find(id);
             if (TryUpdateModel(locationToUpdate, "",
-                new string[] { "Street", "Number", "ZipCode", "City" }))
+                new string[] { "Street", "Number", "ZipCode", "City", "Remarks" }))
             {
                 try
                 {
