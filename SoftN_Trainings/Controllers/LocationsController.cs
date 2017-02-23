@@ -99,6 +99,7 @@ namespace SoftN_Trainings.Controllers
                 try
                 {
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
                 catch (DataException)
                 {

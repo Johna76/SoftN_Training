@@ -14,8 +14,6 @@ namespace SoftN_Trainings.ViewModels
 
         public Session Session { get; set; }
 
-        public Attendee Attendee { get; set; }
-
         public List<string> Attend { get; set; }
 
         public InscriptionViewModel()

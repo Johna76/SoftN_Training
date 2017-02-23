@@ -123,23 +123,13 @@ namespace SoftN_Trainings.Controllers
             {
                 return HttpNotFound();
             }
+                        
+            sessionVM.SelectedTrainers = sessionVM.Session.Trainers.Select(m => m.ID).ToList();            
+            sessionVM.SelectedRequisites = sessionVM.Session.Requisites.Select(m => m.ID).ToList();
 
-            if (sessionVM.SelectedTrainers == null)
-            {
-                sessionVM.SelectedTrainers = sessionVM.Session.Trainers.Select(m => m.ID).ToList();
-            }
-
-            if (sessionVM.SelectedRequisites == null)
-            {
-                sessionVM.SelectedRequisites = sessionVM.Session.Requisites.Select(m => m.ID).ToList();
-            }
-
-            sessionVM.AllTrainers = GetAllTrainers();
-            
-            sessionVM.AllLocations = GetAllLocations();
-            
+            sessionVM.AllTrainers = GetAllTrainers();            
+            sessionVM.AllLocations = GetAllLocations();            
             sessionVM.AllTrainings = GetAllTrainings();
-
             sessionVM.AllRequisites = GetAllRequisites();
 
             return View(sessionVM);

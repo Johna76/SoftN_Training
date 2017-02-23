@@ -95,7 +95,7 @@ namespace SoftN_Trainings.Controllers
             }
             Training trainingToUpdate = db.Trainings.Find(id);
             if (TryUpdateModel(trainingToUpdate, "",
-                new string[] { "LastName", "Description" }))
+                new string[] { "Name", "Description" }))
             {
                 try
                 {
@@ -119,7 +119,7 @@ namespace SoftN_Trainings.Controllers
             }
             if (saveChangesError.GetValueOrDefault())
             {
-                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+                ModelState.AddModelError("", "Delete failed. Try again, and if the problem persists see your system administrator.");
             }
             Training training = db.Trainings.Find(id);
             if (training == null)
