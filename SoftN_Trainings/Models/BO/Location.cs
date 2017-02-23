@@ -13,14 +13,19 @@ namespace SoftN_Trainings.Models.BO
         [Key]
         public int ID { get; set; }
         [Required]
+        [Display(Name = "Straat")]
         public string Street { get; set; }
         [Required]
+        [Display(Name = "Nummer")]
         public string Number { get; set; }
         [Required]
-        [Display(Name = "Zip Code")]
+        [Display(Name = "Postcode")]
         public string ZipCode { get; set; }
         [Required]
+        [Display(Name = "Stad")]
         public string City { get; set; }
+        [Display(Name = "Opmerking")]
+        public string Remarks { get; set; }
 
         //naviation properties
         public virtual ICollection<Session> Sessions { get; set; }

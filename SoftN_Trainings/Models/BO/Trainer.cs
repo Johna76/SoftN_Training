@@ -13,10 +13,10 @@ namespace SoftN_Trainings.Models.BO
         [Key]
         public int ID { get; set; }
         [Required]
-        [Display(Name ="Last name")]
+        [Display(Name ="Achternaam")]
         public string LastName { get; set; }
         [Required]
-        [Display(Name = "First name")]
+        [Display(Name = "Voornaam")]
         public string FirstName { get; set; }
         public string Fullname { get { return LastName + " " + FirstName; } }
 

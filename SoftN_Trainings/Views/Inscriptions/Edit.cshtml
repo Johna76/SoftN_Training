@@ -1,7 +1,7 @@
 ﻿@model SoftN_Trainings.ViewModels.InscriptionViewModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Inschrijving Aanpassen";
 }
 
 <h2>Edit</h2>
@@ -116,12 +116,12 @@
                 var divFrstN = $(document.createElement('div'));
                 $(divFrstN).attr('class', 'col-md-5');
 
-                $(div).append('<label class="control-label col-md-2">Attendee ' + attendnr + '</label>');
-                $(divLstN).append('<label class="control-label">Last Name</label>');
+                $(div).append('<label class="control-label col-md-2">Deelnemer ' + attendnr + '</label>');
+                $(divLstN).append('<label class="control-label">Achternaam</label>');
                 $(divLstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesLst_' + e + '" onkeyup="deleteError(this.id);" name="Attendees[' + e + '].LastName" type="text" value="' + lastname + '" />');
                 $(divLstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesLst_' + e + '"></span>');
                 $(div).append(divLstN);
-                $(divFrstN).append('<label class="control-label">First Name</label>');
+                $(divFrstN).append('<label class="control-label">Voornaam</label>');
                 $(divFrstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesFst_' + e + '" onkeyup="deleteError(this.id);" name="Attendees[' + e + '].FirstName" type="text" value="'+ firstname +'" />');
                 $(divFrstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesFst_' + e + '"></span>');
                 $(div).append(divFrstN);
@@ -150,12 +150,12 @@
                     var divFrstN = $(document.createElement('div'));
                     $(divFrstN).attr('class', 'col-md-5');
 
-                    $(div).append('<label class="control-label col-md-2">Attendee ' + attendnr + '</label>');
-                    $(divLstN).append('<label class="control-label">Last Name</label>');
+                    $(div).append('<label class="control-label col-md-2">Deelnemer ' + attendnr + '</label>');
+                    $(divLstN).append('<label class="control-label">Achternaam</label>');
                     $(divLstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesLst_' + indexDif + '" onkeyup="deleteError(this.id);" name="Attendees[' + indexDif + '].LastName" type="text" value="" />');
                     $(divLstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesLst_' + indexDif + '"></span>');
                     $(div).append(divLstN);
-                    $(divFrstN).append('<label class="control-label">First Name</label>');
+                    $(divFrstN).append('<label class="control-label">Voornaam</label>');
                     $(divFrstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesFst_' + indexDif + '" onkeyup="deleteError(this.id);" name="Attendees[' + indexDif + '].FirstName" type="text" value="" />');
                     $(divFrstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesFst_' + indexDif + '"></span>');
                     $(div).append(divFrstN);
@@ -187,11 +187,11 @@
                 var elementFst = document.getElementById('AttendeesFst_' + i);
 
                 if (elementLst.value == '') {
-                    document.getElementById('error_AttendeesLst_' + i).innerHTML = "Het veld Last Name is vereist.";
+                    document.getElementById('error_AttendeesLst_' + i).innerHTML = "Het veld Achternaam is vereist.";
                     check = false;
                 }
                 if (elementFst.value == '') {
-                    document.getElementById('error_AttendeesFst_' + i).innerHTML = "Het veld First Name is vereist.";
+                    document.getElementById('error_AttendeesFst_' + i).innerHTML = "Het veld Voornaam is vereist.";
                     check = false;
                 }
             }

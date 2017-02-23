@@ -14,17 +14,18 @@ namespace SoftN_Trainings.Models.BO
         public int ID { get; set; }
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]        
+        [DisplayFormat(DataFormatString ="{0:dd-MM-yyyy}",ApplyFormatInEditMode = true)]
+        [Display(Name = "Datum")]
         public DateTime Date { get; set; }
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Start Time")]
+        [Display(Name = "Start uur")]
         public TimeSpan StartTime { get; set; }
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
-        [Display(Name = "End Time")]
+        [Display(Name = "Eind uur")]
         public TimeSpan EndTime { get; set; }
-        [Display(Name = "Max Attendees")]
+        [Display(Name = "Max deelnemers")]
         [Range(1, 1000)]
         public int MaxAttendees { get; set; }
         [ForeignKey("Training")]
@@ -32,7 +33,7 @@ namespace SoftN_Trainings.Models.BO
         [ForeignKey("Location")]
         public int LocationID { get; set; }
         [NotMapped]
-        [Display(Name = "Places Left")]
+        [Display(Name = "Plaatsen vrij")]
         public int PlacesLeft { get; set; }
 
         //navigation properties

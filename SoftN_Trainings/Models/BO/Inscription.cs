@@ -13,10 +13,10 @@ namespace SoftN_Trainings.Models.BO
         [Key]
         public int ID { get; set; }
         [Required]
-        [Display(Name ="Last name")]
+        [Display(Name ="Achternaam")]
         public string LastName { get; set; }
         [Required]
-        [Display(Name = "First name")]
+        [Display(Name = "Voornaam")]
         public string FirstName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -24,16 +24,16 @@ namespace SoftN_Trainings.Models.BO
         public string Email { get; set; }
         [Required]
         [DataType(DataType.PhoneNumber, ErrorMessage = "Not a number")]
-        [Display(Name = "Phone number")]
+        [Display(Name = "Telefoonnummer")]
         public string PhoneNumber { get; set; }
         [Required]
-        [Display(Name = "Company name")]
+        [Display(Name = "Bedrijfsnaam")]
         public string CompanyName { get; set; }
-        [Display(Name = "Number attendees")]
+        [Display(Name = "Aantal deelnemers")]
         [Range(1,1000)]
         public int NumberAttendees { get; set; }
         [Required]
-        [Display(Name = "Waiting list")]
+        [Display(Name = "Wachtlijst")]
         public Boolean WaitingList { get; set; }
         [ForeignKey("Session")]
         public int SessionID { get; set; }
