@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using SoftN_Trainings.Models.BO;
+using SoftN_Trainings.Models.DAL;
+using SoftN_Trainings.ViewModels;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using SoftN_Trainings.Models.BO;
-using SoftN_Trainings.Models.DAL;
-using SoftN_Trainings.ViewModels;
-using Microsoft.Ajax.Utilities;
 
 namespace SoftN_Trainings.Controllers
 {
@@ -32,14 +28,16 @@ namespace SoftN_Trainings.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Inscription inscription = db.Inscriptions.Find(id);
+
             if (inscription == null)
             {
                 return HttpNotFound();
             }
             return View(inscription);
         }
-                
+
         // GET: Inscriptions/Create
         [AllowAnonymous]
         public ActionResult Create(int? sessionId)
@@ -48,16 +46,16 @@ namespace SoftN_Trainings.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             InscriptionViewModel inscriptionVM = new InscriptionViewModel
             {
                 Inscription = new Inscription
                 {
-                    SessionID = sessionId ?? default(int),                    
+                    SessionID = sessionId ?? default(int),
                 },
-                Session = db.Sessions.Find(sessionId),                
+                Session = db.Sessions.Find(sessionId),
             };
-                                                
+
             return View(inscriptionVM);
         }
 
@@ -71,22 +69,11 @@ namespace SoftN_Trainings.Controllers
         {
             if (ModelState.IsValid)
             {
+                Boolean createInscription = false;
+
                 if (inscriptionVM.Inscription.WaitingList == true)
                 {
-                    db.Inscriptions.Add(inscriptionVM.Inscription);
-                    db.SaveChanges();
-
-                    int id = inscriptionVM.Inscription.ID;
-                    
-                    foreach (Attendee a in inscriptionVM.Attendees)
-                    {
-                        a.InscriptionID = id;
-                        db.Attendees.Add(a);
-                    };
-
-                    db.SaveChanges();
-
-                    return RedirectToAction("Index");
+                    createInscription = true;
                 }
                 else
                 {
@@ -94,27 +81,32 @@ namespace SoftN_Trainings.Controllers
 
                     if ((_session.PlacesLeft - inscriptionVM.Inscription.NumberAttendees) >= 0)
                     {
-                        db.Inscriptions.Add(inscriptionVM.Inscription);
-                        db.SaveChanges();
-
-                        int id = inscriptionVM.Inscription.ID;
-
-                        foreach (Attendee a in inscriptionVM.Attendees)
-                        {
-                            a.InscriptionID = id;
-                            db.Attendees.Add(a);
-                        };
-
-                        db.SaveChanges();
-
-                        return RedirectToAction("Index");
+                        createInscription = true;
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Er is onvoldoende plaats in deze sessie. Gelieve u op de wachtlijst te zetten of een andere sessie te kiezen");
+                        ModelState.AddModelError("", "Er zijn nog maar " + _session.PlacesLeft + " plaatsen beschikbaar. Gelieve u op de wachtlijst te zetten of een andere sessie te kiezen");
+                        foreach (Attendee item in inscriptionVM.Attendees)
+                        {
+                            inscriptionVM.Attend.Add(item.LastName.ToString());
+                            inscriptionVM.Attend.Add(item.FirstName.ToString());
+                        }
                     }
                 }
-                
+                if(createInscription == true)
+                {
+                    db.Inscriptions.Add(inscriptionVM.Inscription);
+                    int id = inscriptionVM.Inscription.ID;
+
+                    foreach (Attendee a in inscriptionVM.Attendees)
+                    {
+                        a.InscriptionID = id;
+                        db.Attendees.Add(a);
+                    };
+
+                    db.SaveChanges();
+                    return RedirectToAction("Index","Home");
+                }
             }
             return View(inscriptionVM);
         }
@@ -126,21 +118,23 @@ namespace SoftN_Trainings.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             InscriptionViewModel inscriptionVM = new InscriptionViewModel
             {
                 Inscription = db.Inscriptions.Find(id),
             };
+
             if (inscriptionVM.Inscription == null)
             {
                 return HttpNotFound();
             }
 
-            foreach(Attendee item in inscriptionVM.Inscription.Attendees)
-            {                
+            foreach (Attendee item in inscriptionVM.Inscription.Attendees)
+            {
                 inscriptionVM.Attend.Add(item.LastName.ToString());
                 inscriptionVM.Attend.Add(item.FirstName.ToString());
             }
-            
+
             return View(inscriptionVM);
         }
 
@@ -153,11 +147,16 @@ namespace SoftN_Trainings.Controllers
         {
             if (ModelState.IsValid)
             {
-                Inscription originalInscription = db.Inscriptions.Find(inscriptionVM.Inscription.ID);
-                
                 Boolean updateInscription = false;
 
-                if(inscriptionVM.Inscription.WaitingList == true)
+                Inscription originalInscription = db.Inscriptions.Find(inscriptionVM.Inscription.ID);
+
+                if(originalInscription == null)
+                {
+                    return HttpNotFound();
+                }                
+
+                if (inscriptionVM.Inscription.WaitingList == true)
                 {
                     updateInscription = true;
                 }
@@ -165,15 +164,15 @@ namespace SoftN_Trainings.Controllers
                 {
                     Session _session = CalculatePlacesLeft(inscriptionVM.Inscription);
 
-                    if(originalInscription.WaitingList == false)
+                    if (originalInscription.WaitingList == false)
                     {
                         _session.PlacesLeft += originalInscription.NumberAttendees;
                     }
-                    
+
                     if ((_session.PlacesLeft - inscriptionVM.Inscription.NumberAttendees) >= 0)
                     {
                         updateInscription = true;
-                        
+
                     }
                     else
                     {
@@ -181,7 +180,7 @@ namespace SoftN_Trainings.Controllers
                     }
                 }
 
-                if(updateInscription == true)
+                if (updateInscription == true)
                 {
                     foreach (Attendee a in originalInscription.Attendees.ToList())
                     {
@@ -195,15 +194,13 @@ namespace SoftN_Trainings.Controllers
                         a.InscriptionID = id;
                         db.Attendees.Add(a);
                     };
-                    
+
                     LoadInscriptionWithVM(originalInscription, inscriptionVM.Inscription);
                     db.Entry(originalInscription).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Home");
                 }
-                
             }
-            
             return View(inscriptionVM);
         }
 
@@ -233,14 +230,6 @@ namespace SoftN_Trainings.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddAttendee(InscriptionViewModel inscriptionVM)
-        {
-            return View(inscriptionVM);
-        }
-
 
         private Session CalculatePlacesLeft(Inscription inscription)
         {
@@ -257,9 +246,7 @@ namespace SoftN_Trainings.Controllers
                     totalInscriptionPlaces += item.NumberAttendees;
                 }
             }
-
             _session.PlacesLeft = _session.MaxAttendees - totalInscriptionPlaces;
-
             return _session;
         }
 
@@ -274,7 +261,7 @@ namespace SoftN_Trainings.Controllers
             original.WaitingList = vmInscription.WaitingList;
             original.SessionID = vmInscription.SessionID;
         }
-            
+
 
         protected override void Dispose(bool disposing)
         {

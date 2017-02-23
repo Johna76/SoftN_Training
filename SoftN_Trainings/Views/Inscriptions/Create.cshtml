@@ -7,7 +7,7 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create","Inscriptions",FormMethod.Post, new { onsubmit= "return validateForm();" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Inscription.SessionID)
@@ -81,13 +81,14 @@
             </div>
         </div>
         
-        <div class="insert">            
+
+        <div class="insert">
         </div>
-        
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="submitBtn" name="submitBtn"/>
             </div>
         </div>
     </div>
@@ -98,9 +99,60 @@
     <script>
         var currentCounter = 0;
 
+        var allAttendees = new Array();
+
+        $(document).ready(function () {
+            var input = Number(document.getElementById("Inscription_NumberAttendees").value);
+            if (input != 0)
+            {
+                loadAttendees();
+            }
+
+        });
+
+        function loadAttendees() {
+
+            @foreach(var d in Model.Attend)
+            {
+                @:allAttendees.push("@d");
+            }
+
+            currentCounter = Number(allAttendees.length / 2);
+
+            var e = 0;
+
+            for (i = 0; i < allAttendees.length; i += 2) {
+
+                var attendnr = e + 1;
+                var lastname = allAttendees[i];
+                var firstname = allAttendees[i + 1];
+
+
+                var div = $(document.createElement('div'));
+                $(div).attr('id', 'attendee' + currentCounter);
+                $(div).attr('class', 'form-group col-md-12')
+                var divLstN = $(document.createElement('div'));
+                $(divLstN).attr('class', 'col-md-5');
+                var divFrstN = $(document.createElement('div'));
+                $(divFrstN).attr('class', 'col-md-5');
+
+                $(div).append('<label class="control-label col-md-2">Attendee ' + attendnr + '</label>');
+                $(divLstN).append('<label class="control-label">Last Name</label>');
+                $(divLstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesLst_' + currentCounter + '" onkeyup="deleteError(this.id);" name="Attendees[' + e + '].LastName" type="text" value="' + lastname + '" />');
+                $(divLstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesLst_' + e + '"></span>');
+                $(div).append(divLstN);
+                $(divFrstN).append('<label class="control-label">First Name</label>');
+                $(divFrstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesFst_' + currentCounter + '" onkeyup="deleteError(this.id);" name="Attendees[' + e + '].FirstName" type="text" value="' + firstname + '" />');
+                $(divFrstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesFst_' + e + '"></span>');
+                $(div).append(divFrstN);
+                $('.insert').append(div);   
+
+                e++;
+            }
+        }
+
         function onchangeevent() {
             var inputCounter = Number(document.getElementById("Inscription_NumberAttendees").value);
-            //$(".insert").empty();
 
             if (inputCounter < currentCounter) {
                 var diff = currentCounter - inputCounter;
@@ -122,61 +174,55 @@
 
                     var div = $(document.createElement('div'));
                     $(div).attr('id', 'attendee' + currentCounter);
-                    var div1 = $(document.createElement('div'));
-                    $(div1).attr('class', 'form-group');
-                    var div2 = $(document.createElement('div'));
-                    $(div2).attr('class', 'col-md-10');
-                    var div3 = $(document.createElement('div'));
-                    $(div3).attr('class', 'form-group');
-                    var div4 = $(document.createElement('div'));
-                    $(div4).attr('class', 'col-md-10');
+                    $(div).attr('class','form-group col-md-12')
+                    var divLstN = $(document.createElement('div'));
+                    $(divLstN).attr('class', 'col-md-5');
+                    var divFrstN = $(document.createElement('div'));
+                    $(divFrstN).attr('class', 'col-md-5');
 
-                    $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
-                    $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + currentCounter + '].LastName" type="text" value="" />');
-                    $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
-                    $(div1).append(div2);
-                    $(div).append(div1);
-                    $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
-                    $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + currentCounter + '].FirstName" type="text" value="" />');
-                    $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
-                    $(div3).append(div4);
-                    $(div).append(div3);
+                    $(div).append('<label class="control-label col-md-2">Attendee ' + attendnr + '</label>');
+                    $(divLstN).append('<label class="control-label">Last Name</label>');
+                    $(divLstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesLst_' + currentCounter + '" onkeyup="deleteError(this.id);" name="Attendees[' + currentCounter + '].LastName" type="text" value="" />');
+                    $(divLstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesLst_' + currentCounter + '"></span>');
+                    $(div).append(divLstN);
+                    $(divFrstN).append('<label class="control-label">First Name</label>');
+                    $(divFrstN).append('<input class="form-control text-box single-line" htmlAttributes="{ class = form-control }" id="AttendeesFst_' + currentCounter + '" onkeyup="deleteError(this.id);" name="Attendees[' + currentCounter + '].FirstName" type="text" value="" />');
+                    $(divFrstN).append('<span class="field-validation-valid text-danger" id="error_AttendeesFst_' + currentCounter + '"></span>');
+                    $(div).append(divFrstN);
                     $('.insert').append(div);
 
                     currentCounter++;
                 }
             }
-
             currentCounter = inputCounter;
-            /*for (i = 0; i < inputCounter; i++) {
-                var attendnr = i + 1;
-
-                var div = $(document.createElement('div'));
-                $(div).attr('id', 'attendee' + i);
-                var div1 = $(document.createElement('div'));
-                $(div1).attr('class', 'form-group');
-                var div2 = $(document.createElement('div'));
-                $(div2).attr('class', 'col-md-10');
-                var div3 = $(document.createElement('div'));
-                $(div3).attr('class', 'form-group');
-                var div4 = $(document.createElement('div'));
-                $(div4).attr('class', 'col-md-10');
-
-                $(div1).append('<label class="control-label col-md-2">Last Name ' + attendnr + '</label>');
-                $(div2).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld Last Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + i + '].LastName" type="text" value="" />');
-                $(div2).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.LastName" data-valmsg-replace="true"></span>');
-                $(div1).append(div2); 
-                $(div).append(div1);
-                $(div3).append('<label class="control-label col-md-2">First Name ' + attendnr + '</label>');
-                $(div4).append('<input class="form-control text-box single-line" data-val="true" data-val-required="Het veld First Name is vereist." htmlAttributes="{ class = form-control }" name="Attendees[' + i + '].FirstName" type="text" value="" />');
-                $(div4).append('<span class="field-validation-valid text-danger" data-valmsg-for="Attendee.FirstName" data-valmsg-replace="true"></span>');
-                $(div).append(div3);
-                $('.insert').append(div);
-
-                currentCounter++;
-            }*/
-                          
         }
+
+        function validateForm() {
+            for (i = 0; i < currentCounter; i++) {
+                var check = true;
+                var elementLst = document.getElementById('AttendeesLst_' + i);
+                var elementFst = document.getElementById('AttendeesFst_' + i);
+
+                if (elementLst.value == '') {
+                    document.getElementById('error_AttendeesLst_' + i).innerHTML = "Het veld Last Name is vereist.";
+                    check = false;
+                }
+                if (elementFst.value == '') {
+                    document.getElementById('error_AttendeesFst_' + i).innerHTML = "Het veld First Name is vereist.";
+                    check = false;
+                }
+            }
+            if (check == false) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function deleteError(argId) {
+            document.getElementById('error_' + argId).innerHTML = "";
+        }
+
     </script>
     }
     
