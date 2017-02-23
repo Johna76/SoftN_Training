@@ -97,3 +97,13 @@ G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Mi
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Microsoft.AI.Web.xml
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.dll
 G:\Documenten\Visual Studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.pdb
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\obj\Debug\SoftN_Trainings.csprojResolveAssemblyReference.cache
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\antlr.runtime.dll
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Ical.Net.Collections.dll
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Ical.Net.dll
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\NodaTime.dll
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\antlr.runtime.pdb
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\antlr.runtime.xml
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Ical.Net.pdb
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Ical.Net.xml
+g:\documenten\visual studio 2017\Projects\SoftN_Trainings\SoftN_Trainings\bin\Ical.Net.Collections.pdb
