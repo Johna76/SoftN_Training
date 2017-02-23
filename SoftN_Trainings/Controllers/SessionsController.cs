@@ -35,10 +35,25 @@ namespace SoftN_Trainings.Controllers
                         totalInscriptionPlaces += item.NumberAttendees;
                     }
                 }
-
                 session.PlacesLeft = session.MaxAttendees - totalInscriptionPlaces;
             }
-            return View(allSessions);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return View(allSessions);
+            }
+            else
+            {
+                List<Session> filteredSessionsByDate = new List<Session>();
+                foreach(Session item in allSessions)
+                {
+                    if (item.Date >= DateTime.Today)
+                    {
+                        filteredSessionsByDate.Add(item);
+                    }
+                }
+                return View(filteredSessionsByDate);
+            }
         }
 
         // GET: Sessions/Details/5
@@ -209,7 +224,7 @@ namespace SoftN_Trainings.Controllers
 
         private IEnumerable<SelectListItem> GetAllTrainers()
         {
-            var allTrainersList = db.Trainers.ToList();
+            var allTrainersList = db.Trainers.OrderBy(m => m.LastName).ToList();
             IEnumerable<SelectListItem> alltrainers = allTrainersList.Select(o => new SelectListItem
             {
                 Text = o.Fullname,
@@ -220,7 +235,7 @@ namespace SoftN_Trainings.Controllers
 
         private IEnumerable<SelectListItem> GetAllLocations()
         {
-            var allLocationsList = db.Locations.ToList();
+            var allLocationsList = db.Locations.OrderBy(m => m.City).ToList();
             IEnumerable <SelectListItem> allLocations = allLocationsList.Select(o => new SelectListItem
             {
                 Text = o.City,
@@ -231,7 +246,7 @@ namespace SoftN_Trainings.Controllers
 
         private IEnumerable<SelectListItem> GetAllTrainings()
         {
-            var allTrainingsList = db.Trainings.ToList();
+            var allTrainingsList = db.Trainings.OrderBy(m => m.Name).ToList();
             IEnumerable <SelectListItem> allTrainings = allTrainingsList.Select(o => new SelectListItem
             {
                 Text = o.Name,
@@ -242,7 +257,7 @@ namespace SoftN_Trainings.Controllers
 
         private IEnumerable<SelectListItem> GetAllRequisites()
         {
-            var allRequisistesList = db.Requisites.ToList();
+            var allRequisistesList = db.Requisites.OrderBy(m => m.Name).ToList();
             IEnumerable<SelectListItem> allRequisites = allRequisistesList.Select(o => new SelectListItem
             {
                 Text = o.Name,
