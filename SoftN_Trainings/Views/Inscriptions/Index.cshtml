@@ -6,6 +6,24 @@
 
 <h2>Index</h2>
 
+<div class="col-md-12">
+    <div class="col-md-6">       
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "Inscriptions", FormMethod.Post, new { id = "sortingForm" }))
+        {
+            <div class="col-md-6">
+                All Inscriptions: @Html.RadioButton("typeList", "AllInscrip", false, new { @class = "radio" })
+            </div>
+            <div class="col-md-6">
+                Upcoming Inscriptions: @Html.RadioButton("typeList", "UpcomingInscrip", true, new { @class = "radio" })
+            </div>
+
+
+        }
+    </div>
+</div>
+
 <p>
     @Html.ActionLink("Create New", "Index", "Sessions")
 </p>
@@ -61,3 +79,13 @@
 }
 
 </table>
+@section Javascript
+    {
+    <script>
+        $(function () {
+            $('#sortingForm .radio').change(function () {
+                $('#sortingForm').submit();
+            });
+        });
+    </script>
+}

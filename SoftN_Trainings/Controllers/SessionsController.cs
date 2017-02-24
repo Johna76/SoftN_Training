@@ -19,7 +19,7 @@ namespace SoftN_Trainings.Controllers
 
         [AllowAnonymous]
         // GET: Sessions
-        public ActionResult Index()
+        public ActionResult Index(string typeList)
         {
             var sessions = db.Sessions.Include(s => s.Location).Include(s => s.Training).Include(s => s.Inscriptions);
             List<Session> allSessions = sessions.ToList();
@@ -38,20 +38,28 @@ namespace SoftN_Trainings.Controllers
                 session.PlacesLeft = session.MaxAttendees - totalInscriptionPlaces;
             }
 
-            if (User.Identity.IsAuthenticated)
+            List<Session> filteredSessionsByDate = new List<Session>();
+            foreach (Session item in allSessions)
             {
-                return View(allSessions);
+                if (item.Date >= DateTime.Today)
+                {
+                    filteredSessionsByDate.Add(item);
+                }
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {                
+                if (typeList == null || typeList == "UpcomingSessions")
+                {
+                    return View(filteredSessionsByDate);
+                }
+                else
+                {
+                    return View(allSessions);
+                }
             }
             else
             {
-                List<Session> filteredSessionsByDate = new List<Session>();
-                foreach(Session item in allSessions)
-                {
-                    if (item.Date >= DateTime.Today)
-                    {
-                        filteredSessionsByDate.Add(item);
-                    }
-                }
                 return View(filteredSessionsByDate);
             }
         }

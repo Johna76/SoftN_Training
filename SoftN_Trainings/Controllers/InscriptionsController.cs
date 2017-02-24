@@ -2,6 +2,7 @@
 using SoftN_Trainings.Models.DAL;
 using SoftN_Trainings.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -15,10 +16,28 @@ namespace SoftN_Trainings.Controllers
         private SoftN_TrainingsContext db = new SoftN_TrainingsContext();
 
         // GET: Inscriptions
-        public ActionResult Index()
+        public ActionResult Index(string typeList)
         {
             var inscriptions = db.Inscriptions.Include(i => i.Session);
-            return View(inscriptions.ToList());
+            List<Inscription> allInscriptions = inscriptions.ToList();
+            List<Inscription> filteredInscriptionsByDate = new List<Inscription>();
+
+            foreach (Inscription item in allInscriptions)
+            {
+                if (item.Session.Date >= DateTime.Today)
+                {
+                    filteredInscriptionsByDate.Add(item);
+                }
+            }
+
+            if(typeList == null || typeList == "UpcomingInscrip")
+            {
+                return View(filteredInscriptionsByDate);
+            }
+            else
+            {
+                return View(allInscriptions);
+            }            
         }
 
         // GET: Inscriptions/Details/5
@@ -55,6 +74,11 @@ namespace SoftN_Trainings.Controllers
                 },
                 Session = db.Sessions.Find(sessionId),
             };
+
+            if (!User.Identity.IsAuthenticated && inscriptionVM.Session.Date < DateTime.Today)
+            {
+                return View("CreateError");
+            }
 
             return View(inscriptionVM);
         }

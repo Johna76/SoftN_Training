@@ -6,6 +6,25 @@
 
 <h2>Index</h2>
 
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="col-md-12">
+        <div class="col-md-6">        
+        </div>
+        <div class="col-md-6">
+            @using (Html.BeginForm("Index", "Sessions", FormMethod.Post, new { id = "sortingForm" }))
+            {
+                <div class="col-md-6">
+                    All Sessions: @Html.RadioButton("typeList", "AllSessions", false, new { @class = "radio" })
+                </div>
+                <div class="col-md-6">
+                    Upcoming Sessions: @Html.RadioButton("typeList", "UpcomingSessions", true, new { @class = "radio" })
+                </div>
+            }
+        </div>
+    </div>
+}
+
 <p>
 @if (User.Identity.IsAuthenticated)
 {
@@ -63,8 +82,21 @@
                 @Html.ActionLink("Delete", "Delete", new { id=item.ID }) @:|
             }
             @Html.ActionLink("Inschrijven", "Create", "Inscriptions", new { sessionId = item.ID }, null)
+            
+            
         </td>
     </tr>
 }
 
 </table>
+@section Javascript
+    {
+    <script>
+        $(function () {
+            $('#sortingForm .radio').change(function () {
+                $('#sortingForm').submit();
+            });
+        });
+    </script>
+    }
+
