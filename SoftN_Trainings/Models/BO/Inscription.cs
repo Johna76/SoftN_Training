@@ -35,6 +35,7 @@ namespace SoftN_Trainings.Models.BO
         [Required]
         [Display(Name = "Wachtlijst")]
         public Boolean WaitingList { get; set; }
+        public Guid GuidCheck { get; set; }
         [ForeignKey("Session")]
         public int SessionID { get; set; }
 
@@ -42,10 +43,10 @@ namespace SoftN_Trainings.Models.BO
         public virtual Session Session { get; set; }
         public virtual ICollection<Attendee> Attendees { get; set; }
 
-        public Inscription()
+        /*public Inscription()
         {
             Attendees = new List<Attendee>();
-        }
+        }*/
 
         
     }

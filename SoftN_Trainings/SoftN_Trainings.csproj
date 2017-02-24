@@ -333,6 +333,7 @@
     <Content Include="Views\Inscriptions\Edit.cshtml" />
     <Content Include="Views\Inscriptions\Index.cshtml" />
     <Content Include="Views\Inscriptions\CreateError.cshtml" />
+    <Content Include="Views\Inscriptions\EditError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

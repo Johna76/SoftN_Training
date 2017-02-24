@@ -119,6 +119,7 @@ namespace SoftN_Trainings.Controllers
                 }
                 if(createInscription == true)
                 {
+                    inscriptionVM.Inscription.GuidCheck = Guid.NewGuid();
                     db.Inscriptions.Add(inscriptionVM.Inscription);
                     int id = inscriptionVM.Inscription.ID;
 
@@ -136,9 +137,10 @@ namespace SoftN_Trainings.Controllers
         }
 
         // GET: Inscriptions/Edit/5
-        public ActionResult Edit(int? id)
+        [AllowAnonymous]
+        public ActionResult Edit(int? id, Guid? validation)
         {
-            if (id == null)
+            if (id == null || (validation == null && !User.Identity.IsAuthenticated))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -153,13 +155,20 @@ namespace SoftN_Trainings.Controllers
                 return HttpNotFound();
             }
 
-            foreach (Attendee item in inscriptionVM.Inscription.Attendees)
+            if((validation.Equals(inscriptionVM.Inscription.GuidCheck) && inscriptionVM.Inscription.Session.Date >= DateTime.Today) || User.Identity.IsAuthenticated)
             {
-                inscriptionVM.Attend.Add(item.LastName.ToString());
-                inscriptionVM.Attend.Add(item.FirstName.ToString());
-            }
+                foreach (Attendee item in inscriptionVM.Inscription.Attendees)
+                {
+                    inscriptionVM.Attend.Add(item.LastName.ToString());
+                    inscriptionVM.Attend.Add(item.FirstName.ToString());
+                }
 
-            return View(inscriptionVM);
+                return View(inscriptionVM);
+            }
+            else
+            {
+                return View("EditError");
+            }
         }
 
         // POST: Inscriptions/Edit/5
@@ -167,6 +176,7 @@ namespace SoftN_Trainings.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Edit(InscriptionViewModel inscriptionVM)
         {
             if (ModelState.IsValid)
@@ -222,7 +232,15 @@ namespace SoftN_Trainings.Controllers
                     LoadInscriptionWithVM(originalInscription, inscriptionVM.Inscription);
                     db.Entry(originalInscription).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index", "Home");
+
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        return RedirectToAction("Index", "Inscriptions");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
             return View(inscriptionVM);
