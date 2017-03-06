@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SoftN_Trainings.Models.BO.Session>
+﻿@model PagedList.IPagedList<SoftN_Trainings.Models.BO.Session>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Sessies Overzicht";
@@ -6,11 +8,20 @@
 
 <h2>Index</h2>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="col-md-12">
-        <div class="col-md-6">        
+<div class="col-md-12"> 
+    @using (Html.BeginForm("Index", "Sessions", FormMethod.Get))
+    {
+        <div class="col-md-6">
+            @Html.Hidden("typeList", ViewBag.TypeList as string)
+            <p>
+                Find by name: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+                <input type="submit" value="Search" />
+            </p>
         </div>
+    }
+
+    @if (User.Identity.IsAuthenticated)
+    {
         <div class="col-md-6">
             @using (Html.BeginForm("Index", "Sessions", FormMethod.Post, new { id = "sortingForm" }))
             {
@@ -22,75 +33,81 @@
                 </div>
             }
         </div>
-    </div>
-}
+    }
+</div>
 
 <p>
-@if (User.Identity.IsAuthenticated)
-{
-    @Html.ActionLink("Create New", "Create")
-}
+    @if (User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
 </p>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayName("Sessie")
+            @Html.ActionLink("Sessie", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, typeList = ViewBag.TypeList })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Location.City)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Location.City)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartTime)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().StartTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndTime)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().EndTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PlacesLeft)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().PlacesLeft)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Training.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PlacesLeft)
-        </td>
-        <td>
-            @if (User.Identity.IsAuthenticated)
-            {   
-                @Html.ActionLink("Edit", "Edit", new { id=item.ID }) @:|
-                @Html.ActionLink("Details", "Details", new { id=item.ID }) @:|
-                @Html.ActionLink("Delete", "Delete", new { id=item.ID }) @:|
-            }
-            @Html.ActionLink("Inschrijven", "Create", "Inscriptions", new { sessionId = item.ID }, null)
-            
-            
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Training.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlacesLeft)
+            </td>
+            <td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) @:|
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) @:|
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }) @:|
+                }
+                @Html.ActionLink("Inschrijven", "Create", "Inscriptions", new { sessionId = item.ID }, null)
+            </td>
+        </tr>
+    }
 
 </table>
+<br />
+Page@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
 @section Javascript
-    {
+{
     <script>
         $(function () {
             $('#sortingForm .radio').change(function () {
@@ -98,5 +115,5 @@
             });
         });
     </script>
-    }
+}
 

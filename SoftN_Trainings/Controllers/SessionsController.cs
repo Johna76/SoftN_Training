@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using SoftN_Trainings.Models.BO;
 using SoftN_Trainings.Models.DAL;
 using SoftN_Trainings.ViewModels;
+using PagedList;
 
 namespace SoftN_Trainings.Controllers
 {
@@ -19,12 +20,49 @@ namespace SoftN_Trainings.Controllers
 
         [AllowAnonymous]
         // GET: Sessions
-        public ActionResult Index(string typeList)
+        public ActionResult Index(string typeList, string currentFilter, string searchString, int? page, string sortOrder)
         {
             var sessions = db.Sessions.Include(s => s.Location).Include(s => s.Training).Include(s => s.Inscriptions);
-            List<Session> allSessions = sessions.ToList();
+            //List<Session> allSessions;   
+            var allSessions = sessions;
+            ViewBag.TypeList = typeList;
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
 
-            foreach(Session session in allSessions)
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                var sessionsFiltered = sessions.Where(s => s.Training.Name.Contains(searchString));
+                //allSessions = sessionsFiltered.ToList();
+                allSessions = sessionsFiltered;
+            }
+            else
+            {
+                //allSessions = sessions.ToList();
+            }
+
+            switch (sortOrder)
+            {
+                case "Name_desc":
+                    allSessions = allSessions.OrderByDescending(s => s.Training.Name);
+                    break;
+                default: // Lastname ascending
+                    allSessions = allSessions.OrderBy(s => s.Training.Name);
+                    break;
+            }
+
+            //calculate places left for each session
+            foreach (Session session in allSessions)
             {
                 int totalInscriptionPlaces = 0;
 
@@ -47,20 +85,23 @@ namespace SoftN_Trainings.Controllers
                 }
             }
 
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             if (User.Identity.IsAuthenticated)
             {                
                 if (typeList == null || typeList == "UpcomingSessions")
                 {
-                    return View(filteredSessionsByDate);
+                    return View(filteredSessionsByDate.ToPagedList(pageNumber, pageSize));
                 }
                 else
                 {
-                    return View(allSessions);
+                    return View(allSessions.ToPagedList(pageNumber, pageSize));
                 }
             }
             else
             {
-                return View(filteredSessionsByDate);
+                return View(filteredSessionsByDate.ToPagedList(pageNumber, pageSize));
             }
         }
 
