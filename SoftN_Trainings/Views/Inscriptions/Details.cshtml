@@ -1,4 +1,4 @@
-﻿@model SoftN_Trainings.Models.BO.Inscription
+﻿@model SoftN_Trainings.ViewModels.InscriptionViewModel
 
 @{
     ViewBag.Title = "Inschrijving Detail";
@@ -11,63 +11,63 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Session.Training.Name)
+            @Html.DisplayNameFor(model => model.Inscription.Session.Training.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Session.Training.Name)
+            @Html.DisplayFor(model => model.Inscription.Session.Training.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Inscription.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Inscription.LastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Inscription.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.Inscription.FirstName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Inscription.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.Inscription.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Inscription.PhoneNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.Inscription.PhoneNumber)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)
+            @Html.DisplayNameFor(model => model.Inscription.CompanyName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CompanyName)
+            @Html.DisplayFor(model => model.Inscription.CompanyName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NumberAttendees)
+            @Html.DisplayNameFor(model => model.Inscription.NumberAttendees)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.NumberAttendees)
+            @Html.DisplayFor(model => model.Inscription.NumberAttendees)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.WaitingList)
+            @Html.DisplayNameFor(model => model.Inscription.WaitingList)
         </dt>
 
         <dd>
@@ -75,16 +75,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Attendees)
+            @Html.DisplayNameFor(model => model.Inscription.Attendees)
         </dt>
         
         <dd>
-            @Html.ListBox("Id", new SelectList(Model.Attendees, "Id", "Fullname"))
+            @Html.ListBox("Id", new SelectList(Model.Inscription.Attendees, "Id", "Fullname"))
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Inscription.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

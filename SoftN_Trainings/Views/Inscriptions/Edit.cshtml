@@ -68,11 +68,9 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Inscription.WaitingList, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Inscription.WaitingList)
-                    @Html.ValidationMessageFor(model => model.Inscription.WaitingList, "", new { @class = "text-danger" })
-                </div>
+            <div class="col-md-10">                
+                @Html.DropDownListFor(model => model.Inscription.WaitingList, new SelectList(new[] { new { Value = "false", Text = "Neen" }, new { Value = "true", Text = "Ja" }, }, "Value", "Text", Model), htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Inscription.WaitingList, "", new { @class = "text-danger" })                
             </div>
         </div>
 

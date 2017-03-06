@@ -16,6 +16,8 @@ namespace SoftN_Trainings.ViewModels
 
         public List<string> Attend { get; set; }
 
+        public string WaitingList { get; set; }
+
         public InscriptionViewModel()
         {
             Attend = new List<string>();
