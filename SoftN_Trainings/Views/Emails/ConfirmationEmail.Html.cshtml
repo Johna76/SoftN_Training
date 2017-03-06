@@ -1,0 +1,100 @@
+﻿Content-Type: text/html; charset=utf8
+
+
+<html>
+<body>
+    <p>Geachte,</p>
+    <p>Wij hebben uw inschrijving goed ontvangen.</p>    
+    <p>Via onderstaande link kunt u uw inschrijving bekijken en bewerken.<br />
+       <a href="@ViewBag.FunnyLink">Klik op deze link</a></p>
+    <br />
+    <p>Hieronder vindt u een overzicht van de sessie waarvoor u bent ingeschreven:
+    </p>
+    <table>
+        <tr>
+            <td>Sessie:</td>
+            <td>@ViewBag.Session.Training.Name</td>
+            <td width="10px"></td>
+            <td>Omschrijving:</td>
+            <td>@ViewBag.Session.Training.Description</td>
+        </tr>
+        <tr><td height="10px"></td></tr>
+        <tr>
+            <td>Adres:</td>
+            <td>@ViewBag.Session.Location.FullAdres</td>
+            <td width="10px"></td>
+            <td>Opmerking:</td>
+            <td>@ViewBag.Session.Location.Remarks</td>
+        </tr>
+        <tr><td height="10px"></td></tr>
+        <tr>
+            <td>Datum:</td>
+            <td>@ViewBag.Date</td>
+            <td width="10px" colspan="3"></td>
+        </tr>
+        <tr>
+            <td>Start uur:</td>
+            <td>@ViewBag.Session.StartTime.ToString(@"hh\:mm")</td>
+            <td width="10px"></td>
+            <td>Eind uur:</td>
+            <td>@ViewBag.Session.EndTime.ToString(@"hh\:mm")</td>
+        </tr>
+        <tr><td height="10px"></td></tr>
+        <tr>
+            <td colspan="2">Benodigdheden:</td>
+            <td width="10px"></td>
+            <td colspan="2">Omschrijving:</td>
+        </tr>
+        @foreach(var requisite in ViewBag.Requisite)
+        {
+            <tr>
+                <td colspan="2">@requisite.Name</td>
+                <td width="10px"></td>
+                <td colspan="2">@requisite.Description</td>                
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+    <p>
+        Hieronder vindt u een overzicht van uw inschrijving:
+    </p>
+    <table>
+        <tr>
+            <td>Naam:</td>
+            <td>@ViewBag.Inscription.LastName</td>
+            <td width="10px"></td>
+            <td>Voornaam:</td>
+            <td>@ViewBag.Inscription.FirstName</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>@ViewBag.Inscription.Email</td>
+            <td width="10px"></td>
+            <td>Telefoonnummer:</td>
+            <td>@ViewBag.Inscription.PhoneNumber</td>
+        </tr>
+        <tr>
+            <td>Bedrijf:</td>
+            <td>@ViewBag.Inscription.CompanyName</td>
+            <td width="10px"></td>
+            <td>Wachtlijst:</td>
+            <td>@ViewBag.WaitingList</td>
+        </tr>
+        <tr><td height="10px"></td></tr>
+        <tr>
+            <td colspan="5">Deelnemers:</td>
+        </tr>
+        @foreach (var attendee in @ViewBag.Inscription.Attendees)
+        {
+            <tr>
+                <td>Achternaam:</td>
+                <td>@attendee.LastName</td>
+                <td width="10px"></td>
+                <td>Voornaam</td>
+                <td>@attendee.FirstName</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
